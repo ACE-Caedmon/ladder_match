@@ -1,0 +1,24 @@
+
+<matchConfig>
+	<!-- 完整队伍所需人数 -->
+	<maxUser>1</maxUser>
+	<!-- 是否需要对立阵营才能匹配为对手 -->
+	<campActive>false</campActive>
+	<!-- 根据时间自动扩大匹配范围配置 -->
+	<matchRangeExpandConfig>
+		<!-- 多长时间扩大一次范围,单位毫秒 -->
+		<period>100</period>
+		<!-- 范围扩大的量 -->
+		<incrementValue>1</incrementValue>
+		<!-- 能扩张的最大值 -->
+		<maxValue>20</maxValue>
+	</matchRangeExpandConfig>
+	<!-- 寻找队友扩大匹配范围的配置 -->
+	<combineRangeExpandConfig>
+		<period>100</period>
+		<incrementValue>1</incrementValue>
+		<maxValue>20</maxValue>
+	</combineRangeExpandConfig>
+	<!-- 全局扫描运行周期，单位毫秒 -->
+	<matchExecutePeriod>10</matchExecutePeriod>
+</matchConfig>
