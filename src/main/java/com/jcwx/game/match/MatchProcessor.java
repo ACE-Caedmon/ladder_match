@@ -2,10 +2,7 @@ package com.jcwx.game.match;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +19,21 @@ public class MatchProcessor implements Runnable {
 	private LinkedBlockingQueue<MatchTask> waitAddTaskQueue = new LinkedBlockingQueue<MatchTask>();
 	private MatchConfig config;
 	private ScheduledExecutorService scheduledExecutor = Executors
-			.newSingleThreadScheduledExecutor();
+			.newSingleThreadScheduledExecutor(new ThreadFactory() {
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread t=new Thread(r);
+                    t.setName("Match-Processor");
+                    return t;
+                };
+            });
 	private RangeExpander matchRangeExpander;
 	private MatchProcessorNotifier notifier;
 	private static Logger logger = LoggerFactory
 			.getLogger(MatchProcessor.class);
 	private CombineTRExpander combineRangeExpander;
 	private Thread workThread = null;
-
+    private int totalMatched=0;
 	public MatchProcessor(MatchConfig config) {
 		this.config = config;
 		if (config.getMatchExpandConfig() != null) {
@@ -117,6 +121,7 @@ public class MatchProcessor implements Runnable {
 					if (Math.abs(cpr) <= record) {// 找到合适的队伍
 						task.completed();
 						notifier.completed(task, position);
+                        totalMatched=totalMatched+task.size()+position.size();
 						getTaskQueue().remove();// 匹配成功则移除头并且移除position
 						iterator.remove();
 						return position;
@@ -215,7 +220,7 @@ public class MatchProcessor implements Runnable {
 				for (MatchTask t : getTaskQueue()) {
 					remain = remain + t.size();
 				}
-				logger.debug("Complete a team match and remain players "+remain);
+				logger.debug("Complete a team match ( remain = "+remain+",totalMatched = "+totalMatched+")");
 			}
 
 		} catch (Exception e) {

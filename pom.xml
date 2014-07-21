@@ -4,7 +4,7 @@
 
   <groupId>com.jcwx</groupId>
   <artifactId>ladder_match</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <name>ladder_match</name>
@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.jcwx</groupId>
       <artifactId>config_loader</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
    	<dependency>
 		<groupId>com</groupId>
